@@ -15,7 +15,7 @@ export default defineConfig(({ command }) => {
     }),
     viteMockServe({
       //@ts-ignore
-      localEnabled: command === 'serve',
+      localEnabled: command === 'serve',  //ensure dev period use interface
     }),
     ],
     resolve: {

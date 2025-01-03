@@ -21,5 +21,16 @@ import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon/index.vue';
 app.component('SvgIcon',SvgIcon)
 
+
+//router
+import router from './router'
+app.use(router)
+
+// pinia
+import { pinia } from './store'
+app.use(pinia)
+
+
 import '@/styles/reset.scss'
+import '@/styles/variable.scss'
 app.mount('#app')

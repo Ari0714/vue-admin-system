@@ -14,17 +14,7 @@
 
 
 <script setup lang="ts">
-
   defineProps<{ msg: string }>()
-
-  import axios from 'axios';
-  axios.post('/api/user/login', {
-    'username': 'admin',
-    'password': '111111'
-  }).then((response => { response.data }))
-
-
-
 </script>
 
 <style scoped>
