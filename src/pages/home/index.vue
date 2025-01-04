@@ -1,12 +1,20 @@
 <template>
     <div class="">
-        <h2>home</h2>
+        <h2>Welcome: {{userStore.username}}</h2>
     </div>
 </template>
 
 <script lang="ts" name="" setup>
-    import { } from 'vue'
+    import { ref, reactive } from 'vue'
     import { } from 'vue-router'
+    import { onMounted } from 'vue';
+    import useUserStore from '@/store/modules/user';
+
+    let userStore = useUserStore()
+    onMounted(async () => {
+        console.log('onmount');
+        await userStore.getUserinfo();
+    })
 
 </script>
 

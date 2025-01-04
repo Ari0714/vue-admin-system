@@ -6,73 +6,159 @@
 
             <!-- scronll -->
             <el-scrollbar height="(100vx - 50px)">
-                <el-menu :default-active="activeIndex" mode="vertical" background-color="#001529" text-color="white"
-                    @click="goRouth">
+                <el-menu :collapse="userLayoutStore().isFold" :default-active="route.path" mode="vertical"
+                    background-color="#001529" text-color="white">
                     <RouterLink to="/home">
-                        <el-menu-item index="1"><el-icon>
+                        <el-menu-item index="/home">
+                            <el-icon>
                                 <HomeFilled />
-                            </el-icon>home</el-menu-item>
+                            </el-icon>
+                            <template #title>home</template>
+                        </el-menu-item :icon=HomeFilled>
                     </RouterLink>
                     <RouterLink to="/screen">
-                        <el-menu-item index="2"><el-icon>
+                        <el-menu-item index="/screen"><el-icon>
                                 <DataBoard />
-                            </el-icon>dashboard</el-menu-item>
+                            </el-icon> <template #title>dashboard</template></el-menu-item>
                     </RouterLink>
                     <el-sub-menu index="3">
-                        <template #title> <el-icon>
+                        <template #title>
+                            <el-icon>
                                 <User />
-                            </el-icon>user</template>
+                            </el-icon>
+                            <span>user</span>
+                        </template>
                         <RouterLink to="/acl/user">
-                            <el-menu-item index="31">user</el-menu-item>
+                            <el-menu-item index="/acl/user">user</el-menu-item>
                         </RouterLink>
                         <RouterLink to="/acl/role">
-                            <el-menu-item index="32">role</el-menu-item>
+                            <el-menu-item index="/acl/role">role</el-menu-item>
                         </RouterLink>
                         <RouterLink to="/acl/permission">
-                            <el-menu-item index="33">permission</el-menu-item>
+                            <el-menu-item index="/acl/permission">permission</el-menu-item>
                         </RouterLink>
                     </el-sub-menu>
                     <el-sub-menu index="4">
-                        <template #title><el-icon>
+                        <template #title>
+                            <el-icon>
                                 <Goods />
-                            </el-icon>product</template>
+                            </el-icon>
+                            <span>product</span>
+                        </template>
                         <RouterLink to="/product/sku">
-                            <el-menu-item index="41">sku</el-menu-item>
+                            <el-menu-item index="/product/sku">sku</el-menu-item>
                         </RouterLink>
                         <RouterLink to="/product/spu">
-                            <el-menu-item index="42">spu</el-menu-item>
+                            <el-menu-item index="/product/spu">spu</el-menu-item>
                         </RouterLink>
                         <RouterLink to="/product/attr">
-                            <el-menu-item index="43">attr</el-menu-item>
+                            <el-menu-item index="/product/attr">attr</el-menu-item>
                         </RouterLink>
                         <RouterLink to="/product/trademark">
-                            <el-menu-item index="44">trademark</el-menu-item>
+                            <el-menu-item index="/product/trademark">trademark</el-menu-item>
                         </RouterLink>
                     </el-sub-menu>
                 </el-menu>
             </el-scrollbar>
+        </div>
+
+
+        <!-- topbar -->
+        <div class="layout_topbar" :class="{ fold: userLayoutStore().isFold ? true : false }">
+            <div class="topbar_left">
+                <el-button type="" :icon="userLayoutStore().isFold ? Fold : Expand" style="margin-left: 10px;"
+                    @click="handleFold"></el-button>
+                <el-breadcrumb :separator-icon="ArrowRight" style="margin-left: 10px;">
+                    <el-breadcrumb-item :to="{ path: '/' }"> {{ path.split('/')[1] }}</el-breadcrumb-item>
+                    <el-breadcrumb-item> {{ path.split('/')[2] }}</el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
+
+            <div class="topbar_right">
+                <el-button type="" :icon="Refresh" @click="handleRefresh"></el-button>
+                <el-button type="" :icon="FullScreen" @click="handleFullScreen"></el-button>
+                <el-button type="" :icon="Setting"></el-button>
+                <img :src="userStore.avatar" alt="avatar" style="width: 24px; height: 24px; margin: 0px 5px;">
+
+                <el-dropdown>
+                    <span class="el-dropdown-link">
+                        {{ userStore.username }}
+                        <el-icon class="el-icon--right">
+                            <ArrowDown />
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item></el-dropdown-item>
+                            <el-dropdown-item @click="handleLoginOut">login out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+            </div>
 
         </div>
 
-        <div class="layout_topbar">layout_topbar</div>
-
-        <div class="layout_content">
-
+        <!-- content -->
+        <div class="layout_content" :class="{ fold: userLayoutStore().isFold ? true : false }" v-if="refresh">
             <router-view></router-view>
-
         </div>
 
     </div>
 </template>
 
 <script lang="ts" name="" setup>
-    import { } from 'vue'
-    import { RouterLink } from 'vue-router'
+    import { ref, nextTick, watch } from 'vue'
+    import { RouterLink, useRoute, useRouter } from 'vue-router'
     import Logo from '@/layout/logo/index.vue'  //Logo => fold uppercase()
-    import { User, Lock, HomeFilled, DataBoard, Goods } from '@element-plus/icons-vue'
+    import { User, ArrowRight, HomeFilled, DataBoard, Goods, Expand, Fold, Refresh, FullScreen, Setting, ArrowDown, TurnOff } from '@element-plus/icons-vue'
+    import userLayoutStore from '@/store/modules/setting'
+    import useUserStore from '@/store/modules/user'
+    const route = useRoute()
+    const router = useRouter()
 
-    function goRouth(a: any) {
-        console.log(a.target)
+    let userStore = useUserStore();
+
+    let path = route.path
+    console.log('path', route.path)  //refresh hava first time
+    console.log('matched', route.matched)  //show class layer
+
+    function handleFold() {
+        userLayoutStore().isFold = !userLayoutStore().isFold
+    }
+
+    /**
+     * refresh
+     */
+    let refresh = ref(true)
+    function handleRefresh() {
+        refresh.value = false   // not: refresh = ref(true)
+    }
+    // reload componnet
+    watch(() => refresh.value, () => {
+        nextTick(() => {
+            refresh.value = true
+        })
+    })
+
+    /**
+     * handleFullScreen
+     */
+    function handleFullScreen() {
+        let isFull = document.fullscreenElement;
+        if (!isFull) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
+    /**
+     * handleLoginOut
+     */
+    function handleLoginOut() {
+        userStore.logout()
+        // router.push('/login')
+        router.push({ path: '/login', query: { redirect: route.path } })
     }
 
 </script>
@@ -88,6 +174,11 @@
             width: 260px;
             height: 100vh;
             background-color: #001529;
+            transition: all 0.3s;
+
+            &.fold {
+                width: 50px;
+            }
         }
 
         .layout_topbar {
@@ -96,8 +187,14 @@
             height: 50px;
             top: 0;
             left: 260px;
-            background-color: yellow;
+            background-color: white;
+            background-image: linear-gradient(to right, white, rgb(169, 122, 122));
+            transition: all 0.3s;
 
+            &.fold {
+                width: calc(100% - 50px);
+                left: 50px;
+            }
         }
 
         .layout_content {
@@ -109,6 +206,29 @@
             background-color: skyblue;
             padding: 20px;
             overflow: auto; //slide no effect, else below is white
+            transition: all 0.3s;
+
+            &.fold {
+                width: calc(100% - 50px);
+                left: 50px;
+            }
+        }
+
+        .layout_topbar {
+            display: flex;
+            justify-content: space-between; // split left and right
+            align-items: center; // vertical center
+
+            .topbar_left {
+                display: flex;
+                align-items: center;
+
+            }
+
+            .topbar_right {
+                display: flex;
+                align-items: center;
+            }
         }
     }
 </style>

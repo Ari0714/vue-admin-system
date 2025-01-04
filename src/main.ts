@@ -30,6 +30,8 @@ app.use(router)
 import { pinia } from './store'
 app.use(pinia)
 
+// permission
+import './permission'
 
 import '@/styles/reset.scss'
 import '@/styles/variable.scss'

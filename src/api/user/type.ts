@@ -2,28 +2,25 @@
 
 export interface LoginFormData {
     username: string,
-    password: string
+    password: string,
 }
 
 export interface ResponseData {
     code: number,
-    message: string
-    ok: boolean
+    message: string,
+    status: string
 }
 
 export interface LoginResponseData extends ResponseData {
-    data: {
-        token:string,
-        message:string
-    }
+    token: string,
 }
 
 export interface UserinfoResponseData extends ResponseData {
     data: {
-        routes: string[]
-        buttons: string[]
-        roles: string[]
-        name: string
-        avatar: string
+        username: string,
+        avatar: string,
+        routes: [],
+        userId: string,
+        token: string
     }
 }

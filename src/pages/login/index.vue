@@ -37,8 +37,10 @@
     // console.log(loginForm)
 
     let useStore = useUserStore();
+
     let router = useRouter()
-    // let route = useRoute()
+    let route = useRoute()
+
     let load = ref(false)
 
     let formRef = ref()
@@ -60,7 +62,10 @@
             load.value = false
             // let redirect: any = route.query.redirect;
             // console.log('redirect: ', redirect)
-            router.push('/')
+            // router.push('/')
+            let redirect:any = route.query.redirect
+            router.push({ path: redirect || '/' })
+            
         } catch (error) {
             load.value = false
             ElNotification({
@@ -93,11 +98,11 @@
     const rules = {
         username: [
             // { required: true, min: 6, max: 10, message: '账号长度至少六位', trigger: 'blur' }
-            { validator:validatorUserName, trigger: 'blur' }
+            { validator: validatorUserName, trigger: 'blur' }
         ],
         password: [
             // { required: true, min: 6, max: 15, message: '密码长度至少6位', trigger: 'change' }
-            { validator:validatorPassword, trigger: 'change' }
+            { validator: validatorPassword, trigger: 'change' }
         ]
     }
 
