@@ -58,6 +58,15 @@
                             <el-menu-item index="/product/trademark">trademark</el-menu-item>
                         </RouterLink>
                     </el-sub-menu>
+
+                    <RouterLink to="/messageBoard">
+                        <el-menu-item index="/messageBoard">
+                            <el-icon>
+                                <MessageBox />
+                            </el-icon>
+                            <template #title>MessageBoard</template>
+                        </el-menu-item :icon=HomeFilled>
+                    </RouterLink>
                 </el-menu>
             </el-scrollbar>
         </div>
@@ -110,7 +119,7 @@
     import { ref, nextTick, watch } from 'vue'
     import { RouterLink, useRoute, useRouter } from 'vue-router'
     import Logo from '@/layout/logo/index.vue'  //Logo => fold uppercase()
-    import { User, ArrowRight, HomeFilled, DataBoard, Goods, Expand, Fold, Refresh, FullScreen, Setting, ArrowDown, TurnOff } from '@element-plus/icons-vue'
+    import { User, ArrowRight, HomeFilled, DataBoard, Goods, Expand, Fold, Refresh, FullScreen, Setting, ArrowDown, MessageBox } from '@element-plus/icons-vue'
     import userLayoutStore from '@/store/modules/setting'
     import useUserStore from '@/store/modules/user'
     const route = useRoute()
@@ -203,7 +212,7 @@
             top: 50px;
             width: calc(100% - 260px);
             height: calc(100vh - 50px);
-            background-color: skyblue;
+            background-color: white;
             padding: 20px;
             overflow: auto; //slide no effect, else below is white
             transition: all 0.3s;

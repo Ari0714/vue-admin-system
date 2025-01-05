@@ -1,6 +1,9 @@
 <template>
     <div class="">
-        <h2>Welcome: {{userStore.username}}</h2>
+        <el-card style="max-width: 100%; height: 300px;">
+            <h2>Welcome: {{ userStore.username }}</h2>
+            <img :src="userStore.avatar" alt="avatar" width="200px" height="200px" style="margin-top: 20px;">
+        </el-card>
     </div>
 </template>
 

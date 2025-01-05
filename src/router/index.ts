@@ -92,6 +92,19 @@ const router = createRouter({
         },
 
         {
+            path: '/',
+            component: () => import('@/layout/index.vue'),
+            name: '',
+            children: [
+                {
+                    path: '/messageBoard',
+                    component: () => import('@/pages/messageBoard/index.vue'),
+                    name:'messageBoard'
+                }
+            ]
+        },
+
+        {
             path: '/:pathMatch(.*)*',
             redirect: '/404',
             name: 'any'
